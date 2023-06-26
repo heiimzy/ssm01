@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ekgc.www.mapper.CoursesMapper">
+
+    <select id="findCourses" resultType="cn.ekgc.www.pojo.Courses">
+        select * from courses
+    </select>
+
+    <select id="findCoursesByName" resultType="cn.ekgc.www.pojo.Courses">
+        select * from courses where name like '%${name}%'
+    </select>
+
+    <insert id="insertCourses">
+        insert into courses (id, name, teacher_id, start_time, end_time) value (null, #{courses.name}, #{courses.teacherId}, #{courses.startTime}, #{courses.endTime})
+    </insert>
+
+    <delete id="deleteCourses">
+        delete from courses where id = #{id}
+    </delete>
+
+</mapper>

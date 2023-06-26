@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!-- 日志配置 log4j2 slf4j -->
+        <!--<setting name="logImpl" value="LOG4J"/>-->
+        <!-- 自动按照驼峰命名规则将数据库字段映射到对应的实体类属性中 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 多表关联时 字段自动映射级别设置 -->
+        <setting name="autoMappingBehavior" value="FULL"/>
+    </settings>
+
+    <typeAliases>
+        <package name="cn.ekgc.www.pojo"/>
+    </typeAliases>
+
+</configuration>

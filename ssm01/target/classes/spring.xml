@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+">
+    <!-- IOC的bean自动扫描 -->
+    <context:component-scan base-package="cn.ekgc.www" />
+
+    <!-- AOP的注解代理支持 -->
+    <!--    <aop:aspectj-autoproxy />-->
+
+    <!-- 加载数据库配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties" system-properties-mode="NEVER" />
+
+    <!-- 集成mybatis所需的bean管理 -->
+    <!-- 1.数据源配置 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <!-- 使用注解配置事务 -->
+    <!-- 配置驱动管理的类 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 将数据源注入到bean的dataSource属性中 -->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 1、开启注解驱动支持 告诉它使用驱动管理的类 -->
+    <tx:annotation-driven />
+
+    <!-- 配置SqlSessionFactoryBean  sql会话工厂对象 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 引用数据源组件 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 引用MyBatis配置文件中的配置 -->
+        <property name="configLocation" value="classpath:mybatis.xml" />
+        <!-- 配置SQL映射文件信息 -->
+        <!--        <property name="mapperLocations" value="cn/ekgc/www/mapper/*.xml">-->
+        <!--        </property>-->
+    </bean>
+    <!-- 配置DAO -->
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+    <!-- 配置mapper接口 -->
+    <!--<property name="mapperInterface" value="cn.ekgc.www.mapper.UserMapper" /> -->
+    <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置mapper接口所在位置  在spring容器中就存在了各个mapper接口的bean -->
+        <property name="basePackage" value="cn.ekgc.www.mapper" />
+        <!-- 将sqlSessionFactory对象注入到bean中 根据value值找到会话工厂对象 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+</beans>

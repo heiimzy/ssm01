@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ekgc.www.mapper.StudentsMapper">
+
+    <select id="findStudents" resultType="cn.ekgc.www.pojo.Students">
+        select * from students
+    </select>
+
+    <insert id="insertStudents">
+        insert into students (id, name, gender, grade, clazz, email, phone)
+        value (null, #{students.name}, #{students.gender}, #{students.grade}, #{students.clazz}, #{students.email}, #{students.phone})
+    </insert>
+
+    <delete id="deleteStudents">
+        delete from students where id = #{id}
+    </delete>
+
+    <select id="findStudentByName" resultType="cn.ekgc.www.pojo.Students">
+        SELECT * FROM students WHERE name = #{name}
+    </select>
+
+
+    <select id="findStudentsByName" resultType="cn.ekgc.www.pojo.Students">
+        select * from courses where name like '%${name}%'
+    </select>
+
+</mapper>
